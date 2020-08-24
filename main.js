@@ -1,13 +1,14 @@
 // Tarek Elkheir
-let width = 400;
-let height = 400;
+let width = 500;
+let height = 500;
 let size = 50;
 let gridCells = [] // holds all cells in the grid
 let cellsVisited = [] // stack that keeps track of the cells visited in the DFS
+let numCellsVisited = 0
 
 function setup() {
     createCanvas(width, height)
-    background(255)
+    background('#f0f0f0')
     var numRows = Math.floor(width / size)
     var numCol = Math.floor(height / size)
     for(var i = 0; i < numRows; i++) {
@@ -18,6 +19,7 @@ function setup() {
         }
     }
     cellsVisited.push(gridCells[0][0])
+    numCellsVisited++
 }
 
 function draw() {
@@ -36,7 +38,9 @@ function draw() {
             cellsVisited.push(currentCell)
             var index = Math.floor(Math.random() * neighbors.length)
             cellsVisited.push(neighbors[index])
+            neighbors[index].highlight()
             removeWalls(currentCell, neighbors[index])
+            numCellsVisited++
         }
     }
 }
@@ -90,9 +94,16 @@ function Cell(x, y, size, walls) {
     this.walls = [true, true, true, true]
     this.visited = false;
 
+    this.highlight = function() {
+        noStroke()
+        fill('#5c84ff');
+        rect(this.x, this.y, this.size, this.size)
+    }
+
     this.show = function() {
-        console.log('in show')
         stroke(0)
+        strokeWeight(5)
+        strokeCap(SQUARE);
         if(this.walls[0]) {
             line(this.x, this.y, (this.x + this.size), this.y) // top
         }
@@ -107,7 +118,7 @@ function Cell(x, y, size, walls) {
         }
         if(this.visited) {
             noStroke()
-            fill(255)
+            fill('#f0f0f0');
             rect(this.x, this.y, this.size, this.size)
         }
     }
