@@ -1,7 +1,7 @@
 // Tarek Elkheir
 let width = 400;
 let height = 400;
-let size = 100;
+let size = 50;
 let gridCells = [] // holds all cells in the grid
 let cellsVisited = [] // stack that keeps track of the cells visited in the DFS
 let numCellsVisited = 0
@@ -10,7 +10,7 @@ let numCol = Math.floor(height / size)
 let bgColor = '#f2f2f2'
 let newMazeBtn = document.getElementById('new-maze-btn')
 let playerPos = [0, 0]
-let sol = []
+let player
 
 newMazeBtn.onclick = function() {
     init()
@@ -22,7 +22,7 @@ function setup() {
 }
 
 function init() {
-    background(bgColor)
+    
     for(var i = 0; i < numRows; i++) {
         gridCells[i] = []
         for(var j  = 0; j < numCol; j++) {
@@ -32,35 +32,40 @@ function init() {
     }
     cellsVisited.push(gridCells[0][0])
     drawMaze(gridCells[0][0])
+    player = new Player(playerPos[0] + (size / 2), playerPos[0] + (size / 2), (size / 2))
     numCellsVisited++
 }
 
 function keyPressed() {
-    switch(keyCode) {
-        case LEFT_ARROW:
-            
-        case RIGHT_ARROW:
-
-        case UP_ARROW:
-            
-        case DOWN_ARROW:
-            
+    if(keyCode === UP_ARROW) {
+        player.shiftY(-size)
+    }
+    if(keyCode === DOWN_ARROW) {
+        player.shiftY(size)
+    }
+    if(keyCode === LEFT_ARROW) {
+        player.shiftX(-size)
+    }
+    if(keyCode === RIGHT_ARROW) {
+        player.shiftX(size)
     }
 }
 
 function draw() {
+    background(bgColor)
     for(var i = 0; i < numRows; i++) {
         for(var j  = 0; j < numCol; j++) {
             gridCells[i][j].show()
         }
     }
+    player.show()
 }
 
 function drawMaze(currentCell) {
     while(!(cellsVisited.length === 0)) {
         var currentCell = cellsVisited.pop()
         currentCell.visited = true
-        var neighbors = getNeighbors(currentCell)
+        var neighbors = getNeighboringCells(currentCell)
         if(neighbors.length > 0) {
             cellsVisited.push(currentCell)
             var index = Math.floor(Math.random() * neighbors.length)
@@ -68,6 +73,23 @@ function drawMaze(currentCell) {
             removeWalls(currentCell, neighbors[index])
             numCellsVisited++
         }
+    }
+}
+
+function checkWalls(cellA, cellB) {
+    var xDiff = Math.floor((cellA.x - cellB.x) / size)
+    var yDiff = Math.floor((cellA.y - cellB.y) / size)
+    if(xDiff === 1) {
+        return(cellA.walls[2] && cellB.walls[3])
+    }
+    if(xDiff === -1) {
+        return(cellA.walls[3] && cellB.walls[2])
+    }
+    if(yDiff === 1) {
+        return(cellA.walls[0] && cellB.walls[1])
+    }
+    if(yDiff === -1) {
+        return(cellA.walls[1] && cellB.walls[0])
     }
 }
 
@@ -92,12 +114,37 @@ function removeWalls(cellA, cellB) {
     }
 }
 
-function getNeighbors(cell) {
-    var neighbors = []
-    var x = Math.floor(cell.x / size)
-    var y = Math.floor(cell.y / size)   
-    var maxRow = Math.floor((height - 1) / size)
-    var maxCol = Math.floor((width - 1) / size)
+function findSolution() {
+    var dfsStack = []
+    var cellsVisited = []
+    for(var i = 0; i < numRows; i++) {
+        gridCells[i] = []
+        for(var j  = 0; j < numCol; j++) {
+            gridCells[i][j] = false
+        }
+    }
+
+    var currentCell = gridCells[0][0]
+    cellsVisited[0][0] = true
+    dfsStack.push(currentCell)
+    currentCell.highlight()
+
+    currentCell = dfsStack.pop()
+    while (!(dfsStack.length === 0)) {
+        var x = Math.floor(currentCell.x / size)
+        var y = Math.floor(currentCell.y / size)
+        var neighboringIndices = getValidIndices(x, y)
+        neighboringIndices.forEach(function index() {
+            // var tempCell = 
+        })
+    }
+}
+
+function getValidIndices(x, y) {
+    if((x < 0) || (x > numRows) || (y < 0) || (y > numCol)) {
+        console.error('Invalid cell coordinates')
+    }
+    var validIndices = []
     var indices = [
         [x - 1, y],
         [x + 1, y],
@@ -105,14 +152,25 @@ function getNeighbors(cell) {
         [x, y - 1]
     ]
     indices.forEach(function (index) {
-        if(index[0] >= 0 && index[1] >= 0 && index[0] <= maxRow && index[1] <= maxCol) {
-            var neighboringCell = gridCells[index[0]][index[1]]
-            if(!neighboringCell.visited) {
-                neighbors.push(neighboringCell)
-            }
+        if(index[0] >= 0 && index[1] >= 0 && index[0] < numRows && index[1] < numCol) {
+            validIndices.push([index[0], index[1]])
         }
     })
-    return neighbors
+    return validIndices
+}
+ 
+function getNeighboringCells(cell) {
+    var neigbors = []
+    var x = Math.floor(cell.x / size)
+    var y = Math.floor(cell.y / size)
+    var indices = getValidIndices(x, y)
+    indices.forEach(function (index) {
+        var neighboringCell = gridCells[index[0]][index[1]]
+            if(!neighboringCell.visited) {
+                neigbors.push(neighboringCell)
+            }
+    })
+    return neigbors
 }
 
 function Cell(x, y, size, playerColor) {
@@ -123,12 +181,7 @@ function Cell(x, y, size, playerColor) {
     this.visited = false;
     this.playerColor = playerColor
     this.cellColor = bgColor
-
-    this.highlight = function() {
-        noStroke()
-        fill('#0066ff');
-        rect(this.x, this.y, this.size, this.size)
-    }
+    this.highlighted = false
 
     this.show = function() {
         stroke(0)
@@ -145,10 +198,25 @@ function Cell(x, y, size, playerColor) {
         if(this.walls[3]) {
             line(this.x + this.size, this.y, this.x + this.size, this.y + this.size) // right
         }
-        if(this.visited) {
-            noStroke()
-            fill(bgColor);
-            rect(this.x, this.y, this.size, this.size)
-        }
+    }
+}
+
+function Player(x, y, size) {
+    this.x = x
+    this.y = y
+    this.size = size
+
+    this.show = function() {
+        ellipse(this.x, this.y, this.size, this.size)
+    }
+
+    this.shiftX = function(amount) {
+        this.x = this.x + amount
+        console.log('x: ' + this.x)
+    }
+    
+    this.shiftY = function(amount) {
+        this.y = this.y + amount
+        console.log('y: ' + this.y)
     }
 }
