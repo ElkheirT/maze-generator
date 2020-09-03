@@ -7,6 +7,7 @@ class Player {
 
     show = function() {
         fill(255)
+        stroke(0)
         ellipse(this.x, this.y, this.size, this.size)
     }
 
