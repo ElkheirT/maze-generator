@@ -1,16 +1,18 @@
 // Tarek Elkheir
 let newMazeBtn = document.getElementById('new-maze-btn')
+let showSolutionBtn = document.getElementById('show-soln-btn')
 let playerPos = [0, 0]
 let maze
 let player
-let dfsStack = []
-let solFound = false
-let currentCell
+
 newMazeBtn.onclick = function() {
     maze.init()
-    maze.findSolution()
     player.setPosition((maze.size / 2), (maze.size / 2))
     playerPos = [0, 0]
+}
+
+showSolutionBtn.onclick = function() {
+    maze.showSolution()
 }
 
 function setup() {
@@ -21,18 +23,6 @@ function setup() {
     maze = new Maze(width, height, size)
     maze.init()
     player = new Player(playerPos[0] + (size / 2), playerPos[0] + (size / 2), (size / 2))
-    resetMaze()
-    console.log(maze.mazeCells)
-    currentCell = maze.mazeCells[0][0]
-    dfsStack.push(currentCell)
-}
-
-function resetMaze() {
-    for(var i = 0; i < maze.numRows; i++) {
-        for(var j  = 0; j < maze.numCol; j++) {
-            maze.mazeCells[i][j].visited = false
-        }
-    }
 }
 
 function getUnvisitedNeighbors(cell) {
@@ -43,22 +33,6 @@ function draw() {
     background('#fff')
     maze.drawCells()
     player.show()
-    currentCell.visited = true
-    currentCell.highlighted = true
-    var nextCell = dfsStack.pop()
-    if(nextCell && !solFound) {
-        var neighbors = nextCell.neighbors
-        for(let cell of neighbors) {
-            if(!cell.visited) {
-                cell.visited = true
-                cell.highlighted = true
-                dfsStack.push(cell)
-                if(cell.x === (maze.numCol - 1) && cell.y === (maze.numRows - 1)) {
-                    solFound = true
-                }
-            }
-        }
-    }
 }
 
 function isMoveValid(x, y) {

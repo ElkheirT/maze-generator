@@ -7,7 +7,7 @@ class Maze {
         this.numCol = Math.floor(this.height / this.size)
         this.mazeCells = []
         this.cellsVisited = []
-        this.mazeSolution = []
+        this.mazeSolution = new Map()
     }
 
     init() {
@@ -20,6 +20,7 @@ class Maze {
             }
         }
         this.drawMaze(this.mazeCells[0][0])
+        this.findSolution()
     }
 
     drawCells() {
@@ -65,6 +66,51 @@ class Maze {
         if(yDiff === -1) {
             cellA.walls[1] = false
             cellB.walls[0] = false
+        }
+    }
+
+    resetCells() {
+        for(var i = 0; i < maze.numRows; i++) {
+            for(var j  = 0; j < maze.numCol; j++) {
+                maze.mazeCells[i][j].visited = false
+            }
+        }
+    }
+
+    findSolution() {
+        this.resetCells()
+        var dfsStack = []
+        var solFound = false
+        
+        var currentCell = this.mazeCells[0][0]
+        currentCell.visited = true
+        dfsStack.push(currentCell)
+        
+        while(dfsStack.length > 0) {
+            var nextCell = dfsStack.pop()
+
+            nextCell.visited = true
+            
+            var neighbors = nextCell.neighbors.filter(this.getUnvisitedNeighbors)
+            for(let cell of neighbors) {
+                dfsStack.push(cell)
+                this.mazeSolution.set(cell, nextCell)
+                if(cell.x === (this.numCol - 1) && cell.y === (this.numRows - 1)) {
+                    cell.visited = true
+                    this.mazeSolution.set(cell, nextCell)
+                    solFound = true
+                    break;
+                }
+            }
+        }
+    }
+
+    showSolution() {
+        var target = this.mazeCells[this.numRows - 1][this.numCol - 1]
+        target.highlighted = true
+        while(target != undefined) {
+            target = this.mazeSolution.get(target)
+            target.highlighted = true
         }
     }
 
