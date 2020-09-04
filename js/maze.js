@@ -110,7 +110,9 @@ class Maze {
         target.highlighted = true
         while(target != undefined) {
             target = this.mazeSolution.get(target)
-            target.highlighted = true
+            if(target) {
+                target.highlighted = true
+            }
         }
     }
 

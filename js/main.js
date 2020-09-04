@@ -16,10 +16,11 @@ showSolutionBtn.onclick = function() {
 }
 
 function setup() {
-    var width = 500
-    var height = 500
+    var width = 200
+    var height = 200
     var size = 50
-    createCanvas(width, height)
+    var mazeCanvas = createCanvas(width, height)
+    mazeCanvas.parent('maze-container')
     maze = new Maze(width, height, size)
     maze.init()
     player = new Player(playerPos[0] + (size / 2), playerPos[0] + (size / 2), (size / 2))

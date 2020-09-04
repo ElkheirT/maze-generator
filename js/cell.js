@@ -27,7 +27,7 @@ class Cell {
             line(x + this.size, y, x + this.size, y + this.size) // right
         }
         if(this.highlighted == true) {
-            fill(66, 135, 245)
+            fill(0, 0, 0, 30)
             noStroke()
             rect(x, y, this.size, this.size)
         }
