@@ -72,7 +72,7 @@ class Maze {
     resetCells() {
         for(var i = 0; i < maze.numRows; i++) {
             for(var j  = 0; j < maze.numCol; j++) {
-                maze.mazeCells[i][j].visited = false
+                this.mazeCells[i][j].visited = false
             }
         }
     }
@@ -121,8 +121,7 @@ class Maze {
     }
     
     getNeighboringIndices(x, y) {
-        let isValid = this.isIndexValid
-        if(!(isValid(x, y))) {
+        if(!(this.isIndexValid(x, y))) {
             console.error('Invalid cell coordinates')
         }
         var indices = [
@@ -133,14 +132,14 @@ class Maze {
         ]
         var validIndices = []
         indices.forEach(function (index) {
-            if(isValid(index[0], index[1])) {
+            if(this.isIndexValid(index[0], index[1])) {
                 validIndices.push([index[0], index[1]])
             }
-        })
+        }, this)
         return validIndices
     }
 
-    isIndexValid = (x, y) => {
+    isIndexValid(x, y) {
         if((x < 0) || (x >= this.numRows) || (y < 0) || (y >= this.numCol)) {
             return false
         }

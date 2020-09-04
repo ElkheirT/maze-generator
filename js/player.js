@@ -5,21 +5,21 @@ class Player {
         this.size = size
     }
 
-    show = function() {
+    show() {
         fill(255)
         stroke(0)
         ellipse(this.x, this.y, this.size, this.size)
     }
 
-    shiftX = function(amount) {
+    shiftX(amount) {
         this.x = this.x + amount
     }
 
-    shiftY = function(amount) {
+    shiftY(amount) {
         this.y = this.y + amount
     }
     
-    setPosition = function(x, y) {
+    setPosition(x, y) {
         this.x = x
         this.y = y
     }
