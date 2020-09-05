@@ -16,8 +16,8 @@ showSolutionBtn.onclick = function() {
 }
 
 function setup() {
-    var width = 200
-    var height = 200
+    var width = 500
+    var height = 500
     var size = 50
     var mazeCanvas = createCanvas(width, height)
     mazeCanvas.parent('maze-container')

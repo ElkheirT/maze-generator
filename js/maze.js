@@ -20,7 +20,7 @@ class Maze {
             }
         }
         this.drawMaze(this.mazeCells[0][0])
-        this.findSolution()
+        
     }
 
     drawCells() {
@@ -44,6 +44,7 @@ class Maze {
                 this.removeWalls(currentCell, neighbors[index])
                 currentCell.addNeighbor(neighbors[index])
                 neighbors[index].addNeighbor(currentCell)
+                this.mazeSolution.set(neighbors[index], currentCell)
             }
         }
     }
@@ -73,34 +74,6 @@ class Maze {
         for(var i = 0; i < maze.numRows; i++) {
             for(var j  = 0; j < maze.numCol; j++) {
                 this.mazeCells[i][j].visited = false
-            }
-        }
-    }
-
-    findSolution() {
-        this.resetCells()
-        var dfsStack = []
-        var solFound = false
-        
-        var currentCell = this.mazeCells[0][0]
-        currentCell.visited = true
-        dfsStack.push(currentCell)
-        
-        while(dfsStack.length > 0) {
-            var nextCell = dfsStack.pop()
-
-            nextCell.visited = true
-            
-            var neighbors = nextCell.neighbors.filter(this.getUnvisitedNeighbors)
-            for(let cell of neighbors) {
-                dfsStack.push(cell)
-                this.mazeSolution.set(cell, nextCell)
-                if(cell.x === (this.numCol - 1) && cell.y === (this.numRows - 1)) {
-                    cell.visited = true
-                    this.mazeSolution.set(cell, nextCell)
-                    solFound = true
-                    break;
-                }
             }
         }
     }
