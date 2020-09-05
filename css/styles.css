@@ -5,3 +5,7 @@
     justify-content: center;
     min-height: 90vh;
 }
+
+#show-soln-btn-label {
+    user-select: none;
+}

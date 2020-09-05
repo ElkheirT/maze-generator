@@ -9,10 +9,15 @@ newMazeBtn.onclick = function() {
     maze.init()
     player.setPosition((maze.size / 2), (maze.size / 2))
     playerPos = [0, 0]
+    showSolutionBtn.checked = false
 }
 
 showSolutionBtn.onclick = function() {
-    maze.showSolution()
+    if(showSolutionBtn.checked) {
+        maze.showSolution()
+    } else {
+        maze.hideSolution()
+    }
 }
 
 function setup() {

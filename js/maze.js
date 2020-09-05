@@ -89,8 +89,15 @@ class Maze {
         }
     }
 
-    getUnvisitedNeighbors(cell) {
-        return !cell.visited
+    hideSolution() {
+        var target = this.mazeCells[this.numRows - 1][this.numCol - 1]
+        target.highlighted = false
+        while(target != undefined) {
+            target = this.mazeSolution.get(target)
+            if(target) {
+                target.highlighted = false
+            }
+        }
     }
     
     getNeighboringIndices(x, y) {
