@@ -20,7 +20,7 @@ class Maze {
             }
         }
         this.drawMaze(this.mazeCells[0][0])
-        this.mazeCells[this.numRows - 1][this.numCol - 1].highlighted = true
+        this.showMazeTarget()
     }
 
     drawCells() {
@@ -29,6 +29,10 @@ class Maze {
                 this.mazeCells[i][j].show()
             }
         }
+    }
+
+    showMazeTarget() {
+        this.mazeCells[this.numRows - 1][this.numCol - 1].highlighted = true
     }
 
     drawMaze(currentCell) {

@@ -5,7 +5,7 @@ let playerPos = [0, 0]
 let maze
 let player
 
-newMazeBtn.onclick = function() {
+newMazeBtn.onmousedown = function() {
     maze.init()
     player.setPosition((maze.size / 2), (maze.size / 2))
     playerPos = [0, 0]
