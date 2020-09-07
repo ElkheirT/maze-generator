@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -9,16 +10,17 @@
 <body>
     <main></main>
     <div id="container">
+        <h1 id="heading">Maze Generator</h1>
         <div id="maze-container">
         </div>
         <div id="btn-container">
-            <button id='new-maze-btn'>Generate new maze</button>
-            <input type="checkbox" id="show-soln-btn">
-            <label for="show-soln-btn" id="show-soln-btn-label">Show solution</label>
-            <!-- <button id='show-soln-btn'>Show solution</button> -->
+            <button id='new-maze-btn'>New maze</button>
+            <div id="show-sln-container">
+                <input type="checkbox" id="show-soln-btn">
+                <label for="show-soln-btn" id="show-soln-btn-label">Show solution</label>
+            </div>
         </div>
     </div>
-
 </body>
 <script src="js/p5.js"></script>
 <script src="js/maze.js"></script>

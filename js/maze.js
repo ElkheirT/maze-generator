@@ -20,7 +20,7 @@ class Maze {
             }
         }
         this.drawMaze(this.mazeCells[0][0])
-        
+        this.mazeCells[this.numRows - 1][this.numCol - 1].highlighted = true
     }
 
     drawCells() {
@@ -91,7 +91,6 @@ class Maze {
 
     hideSolution() {
         var target = this.mazeCells[this.numRows - 1][this.numCol - 1]
-        target.highlighted = false
         while(target != undefined) {
             target = this.mazeSolution.get(target)
             if(target) {
