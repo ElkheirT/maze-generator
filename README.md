@@ -1,6 +1,8 @@
 # Maze Generator
 [Live demo](https://elkheirt.github.io/maze-generator/)
-![Screenshot](images/Screenshot.png)
+<p align="center">
+    <img src="https://raw.githubusercontent.com/ElkheirT/maze-generator/master/images/Screenshot.png">
+ </p>
 ## Description
 A maze generator built using HTML, CSS, JavaScript, and the p5.js library
 
