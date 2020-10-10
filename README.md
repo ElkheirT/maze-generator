@@ -5,7 +5,7 @@
 
 [**Live Demo**](https://elkheirt.github.io/maze-generator/)
 ## Description
-A maze generator built using HTML, CSS, JavaScript, and the p5.js library.
+A maze generator built using HTML, CSS, JavaScript, and the [p5.js library](https://p5js.org/).
 
 The randomized depth-first search algorithm is used for maze generation.
 
